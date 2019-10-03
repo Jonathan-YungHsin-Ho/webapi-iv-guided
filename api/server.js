@@ -1,7 +1,7 @@
 const express = require('express');
 const helmet = require('helmet');
 
-console.log('environment', process.env.NODE_ENV);
+console.log('environment:', process.env.NODE_ENV);
 
 const Shoutouts = require('../data/shoutouts-model.js');
 
@@ -13,7 +13,8 @@ server.use(express.json());
 server.get('/', (req, res) => {
   Shoutouts.find()
     .then(shoutouts => {
-      res.status(200).json(shoutouts);
+      const messageOfTheDay = process.env.MOTD || 'Hello World!';
+      res.status(200).json({ motd: messageOfTheDay, shoutouts });
     })
     .catch(error => {
       console.error('\nERROR', error);
